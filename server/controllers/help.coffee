@@ -36,7 +36,7 @@ module.exports =
                         attachments = [
                             filename: "logs.tar.gz"
                             content: dir
-                            contentType: "text/plain"
+                            contentType: "application/x-compressed-tar"
                         ]
 
                         data =
