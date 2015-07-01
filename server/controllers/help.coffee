@@ -31,11 +31,11 @@ module.exports =
                 Application.all (err, apps) ->
                     slugs = apps.map (app) -> app.slug
 
-                    logs.getCompressLogs (dir) ->
+                    logs.getCompressLogs (logs) ->
 
                         attachments = [
                             filename: "logs.tar.gz"
-                            content: dir
+                            content: logs
                             contentType: "application/x-compressed-tar"
                         ]
 

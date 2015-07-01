@@ -52,12 +52,11 @@ module.exports = logs =
             callback null, logContents
 
     getCompressLogs: (callback) ->
-        logContent = ''
+        data = []
         fstream.Reader 'path': '/usr/local/var/log/cozy', 'type': 'Directory'
         .pipe tar.Pack()
         .pipe zlib.Gzip()
-        .on 'data', (data) ->
-            logContent += data.toString()
+        .on 'data', (chunk) ->
+            data.push chunk
         .on 'end', ()->
-            callback logContent
-
+            callback Buffer.concat(data)
