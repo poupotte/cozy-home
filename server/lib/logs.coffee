@@ -53,13 +53,12 @@ module.exports = logs =
 
     getCompressLogs: (callback) ->
         path = path.join __dirname, '..', '..', 'cozy.tar.gz'
-        streamWrite = fstream.Writer('path': path)
         stream = fstream.Reader 'path': '/usr/local/var/log/cozy', 'type': 'Directory'
         .pipe(tar.Pack())
         .pipe(zlib.Gzip())
-        .on 'data', (chunk) ->
-            streamWrite.write chunk
-        .on 'end', () ->
+        .pipe fstream.Writer('path': path)
+        setTimeout () =>
             callback path
+        , 30 * 1000
 
 
