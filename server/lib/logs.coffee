@@ -57,7 +57,7 @@ module.exports = logs =
         .pipe tar.Pack()
         .pipe zlib.Gzip()
         .on 'data', (data) ->
-            logContent += data
+            logContent += data.toString()
         .on 'end', ()->
             callback logContent
 
