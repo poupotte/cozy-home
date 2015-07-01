@@ -21,8 +21,6 @@ module.exports =
                 {body} = req
                 infos = {locale, domain}
 
-                selectedApp = 'calendar'
-
                 content = '\n\n---- User config\n\n'
                 content += JSON.stringify({locale, domain}) + '\n'
                 content += JSON.stringify({email, public_name}) + '\n'
@@ -33,31 +31,23 @@ module.exports =
                 Application.all (err, apps) ->
                     slugs = apps.map (app) -> app.slug
 
-                    logs.getManyLogs slugs, (err, appLogs) ->
-                        logs.getLogs 'data-system', (err, dsLogs) ->
+                    logs.getCompressLogs (dir) ->
 
-                            attachments = []
-                            if dsLogs?
-                                attachments.push
-                                    filename: "ds.log"
-                                    content: dsLogs
-                                    contentType: "plain/text"
+                        attachments = [
+                            filename: "logs.tar.gz"
+                            content: dir
+                            contentType: "text/plain"
+                        ]
 
-                            for slug, logContent of appLogs
-                                attachments.push
-                                    filename: "#{slug}.log"
-                                    content: logContent
-                                    contentType: "text/plain"
+                        data =
+                            to: "support@cozycloud.cc"
+                            subject: "Demande d'assistance depuis un Cozy"
+                            content: content
+                            attachments: attachments
 
-                            data =
-                                to: "support@cozycloud.cc"
-                                subject: "Demande d'assistance depuis un Cozy"
-                                content: content
-                                attachments: attachments
+                        cozydb.api.sendMailFromUser data, (err) =>
+                            return next err if err
 
-                            cozydb.api.sendMailFromUser data, (err) =>
-                                return next err if err
-
-                                res.send
-                                    success: 'Mail successully sent to support.'
+                            res.send
+                                success: 'Mail successully sent to support.'
 
