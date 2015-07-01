@@ -3,7 +3,7 @@ CozyInstance = require '../models/cozyinstance'
 CozyUser = require '../models/user'
 Application = require '../models/application'
 logs = require '../lib/logs'
-
+fs = require 'fs'
 
 module.exports =
 
@@ -28,12 +28,10 @@ module.exports =
                 content += '\n\n---- User message\n\n'
                 content += req.body.messageText
 
-                logs.getCompressLogs (logs) ->
+                logs.getCompressLogs (path) ->
 
                     attachments = [
-                        filename: "cozyLogs.tar.gz"
-                        content: logs
-                        contentType: "application/x-compressed-tar"
+                        path: path
                     ]
 
                     data =
@@ -43,6 +41,8 @@ module.exports =
                         attachments: attachments
 
                     cozydb.api.sendMailFromUser data, (err) =>
+                        console.log path
+                        fs.unlink path
                         return next err if err
 
                         res.send
