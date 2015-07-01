@@ -28,26 +28,23 @@ module.exports =
                 content += '\n\n---- User message\n\n'
                 content += req.body.messageText
 
-                Application.all (err, apps) ->
-                    slugs = apps.map (app) -> app.slug
+                logs.getCompressLogs (logs) ->
 
-                    logs.getCompressLogs (logs) ->
+                    attachments = [
+                        filename: "cozyLogs.tar.gz"
+                        content: logs.toString()
+                        contentType: "application/x-compressed-tar"
+                    ]
 
-                        attachments = [
-                            filename: "logs.tar.gz"
-                            content: logs
-                            contentType: "application/x-compressed-tar"
-                        ]
+                    data =
+                        to: "support@cozycloud.cc"
+                        subject: "Demande d'assistance depuis un Cozy"
+                        content: content
+                        attachments: attachments
 
-                        data =
-                            to: "support@cozycloud.cc"
-                            subject: "Demande d'assistance depuis un Cozy"
-                            content: content
-                            attachments: attachments
+                    cozydb.api.sendMailFromUser data, (err) =>
+                        return next err if err
 
-                        cozydb.api.sendMailFromUser data, (err) =>
-                            return next err if err
-
-                            res.send
-                                success: 'Mail successully sent to support.'
+                        res.send
+                            success: 'Mail successully sent to support.'
 

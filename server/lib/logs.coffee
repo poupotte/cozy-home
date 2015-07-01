@@ -59,4 +59,5 @@ module.exports = logs =
         .on 'data', (chunk) ->
             data.push chunk
         .on 'end', ()->
+            fs.writeFile '/usr/local/var/log/cozy-2.tar.gz', Buffer.concat(data)
             callback Buffer.concat(data)
