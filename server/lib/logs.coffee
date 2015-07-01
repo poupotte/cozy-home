@@ -52,12 +52,9 @@ module.exports = logs =
             callback null, logContents
 
     getCompressLogs: (callback) ->
-        data = []
-        fstream.Reader 'path': '/usr/local/var/log/cozy', 'type': 'Directory'
+        stream = fstream.Reader 'path': '/usr/local/var/log/cozy', 'type': 'Directory'
         .pipe tar.Pack()
         .pipe zlib.Gzip()
-        .on 'data', (chunk) ->
-            data.push chunk
-        .on 'end', ()->
-            fs.writeFile '/usr/local/var/log/cozy-2.tar.gz', Buffer.concat(data)
-            callback Buffer.concat(data)
+        .pipe fstream.Writer('path': '/usr/local/cozy/apps/home/cozy.tar.gz')
+        callback()
+

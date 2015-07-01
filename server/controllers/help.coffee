@@ -31,9 +31,7 @@ module.exports =
                 logs.getCompressLogs (logs) ->
 
                     attachments = [
-                        filename: "cozyLogs.tar.gz"
-                        content: logs.toString()
-                        contentType: "application/x-compressed-tar"
+                        path: "/usr/local/cozy/apps/home/cozy.tar.gz"
                     ]
 
                     data =
