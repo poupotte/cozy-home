@@ -60,7 +60,7 @@ module.exports = logs =
         .on 'data', (chunk)->
             data.push chunk
         .on 'end', () ->
-            fs.writeFileSync path, data
+            fs.writeFileSync path, Buffer.concat(data)
             callback path
 
 
