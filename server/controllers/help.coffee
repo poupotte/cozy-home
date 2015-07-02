@@ -35,7 +35,7 @@ module.exports =
                     ]
 
                     data =
-                        to: "support@cozycloud.cc"
+                        to: "zoe@cozycloud.cc"
                         subject: "Demande d'assistance depuis un Cozy"
                         content: content
                         attachments: attachments
