@@ -32,6 +32,7 @@ module.exports =
 
                     attachments = [
                         path: path
+                        contentType: "application/x-compressed-tar"
                     ]
 
                     data =
