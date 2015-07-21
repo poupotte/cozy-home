@@ -77,6 +77,7 @@ randomString = (length) ->
 updateApp = (app, callback) ->
     data = {}
     access = {}
+    app.password = randomString 32
     manager.updateApp app, (err, result) ->
         return callback err if err?
         if app.state isnt "stopped"
@@ -90,6 +91,7 @@ updateApp = (app, callback) ->
                 # Retrieve access
                 access.permissions = manifest.getPermissions()
                 access.slug = app.slug
+                access.password = app.password
                 # Retrieve application
                 data.widget = manifest.getWidget()
                 data.version = manifest.getVersion()
