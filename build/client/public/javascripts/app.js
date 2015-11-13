@@ -4614,7 +4614,8 @@ module.exports = Application = (function(_super) {
     _ref1 = callbacks || {}, success = _ref1.success, error = _ref1.error;
     if (presuccess == null) {
       presuccess = function(data) {
-        delete data.app.description;
+        var _ref2;
+        delete (((_ref2 = data.app) != null ? _ref2.description : void 0) != null);
         return _this.set(data.app);
       };
     }
@@ -6856,7 +6857,7 @@ module.exports = ApplicationsListView = (function(_super) {
         previous = this.$el.find(".config-application:eq(" + index + ")");
         return view.$el.insertAfter(previous);
       } else {
-        next = this.$el.find(".config-application:eq(" + (index + 2) + ")");
+        next = this.$el.find(".config-application:eq(" + (index + 1) + ")");
         return view.$el.insertBefore(next);
       }
     }
