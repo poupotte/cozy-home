@@ -4615,8 +4615,12 @@ module.exports = Application = (function(_super) {
     if (presuccess == null) {
       presuccess = function(data) {
         var _ref2;
-        delete (((_ref2 = data.app) != null ? _ref2.description : void 0) != null);
-        return _this.set(data.app);
+        if (((_ref2 = data.app) != null ? _ref2.description : void 0) != null) {
+          delete data.app.description;
+        }
+        if (data.app != null) {
+          return _this.set(data.app);
+        }
       };
     }
     this.trigger('request', this, null, callbacks);
